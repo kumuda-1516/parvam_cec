@@ -28,3 +28,17 @@ class Student {
             }
         }
     };
+        
+    int main() {
+        Student s;
+        s.setName("Alice");
+        s.setAge(20);
+        s.setCgpa(3.5);
+        
+        cout << "Student Details:" << endl;
+        cout << "Name: " << s.getName() << endl;
+        cout << "Age: " << s.getAge() << endl;
+        cout << "CGPA: " << s.getCgpa() << endl;
+        
+        return 0;
+    }
