@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower of Hanoi - 2 Player Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🏯 Tower of Hanoi - 2 Player Challenge</h1>
+            <div class="header-content">
+                <div class="level-selector">
+                    <label for="level">Select Level:</label>
+                    <select id="level">
+                        <option value="1">Level 1 - Easy (3 Discs)</option>
+                        <option value="2">Level 2 - Medium (4 Discs)</option>
+                        <option value="3">Level 3 - Hard (5 Discs)</option>
+                        <option value="4">Level 4 - Very Hard (6 Discs)</option>
+                        <option value="5">Level 5 - Extreme (7 Discs)</option>
+                    </select>
+                    <button id="startBtn" class="start-btn">Start Game</button>
+                </div>
+                <div class="game-status-header">
+                    <div class="status-badge" id="statusBadge">Ready to Start</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Game Guide -->
+        <div class="guide-container">
+            <button class="guide-toggle" id="guideToggle">📖 How to Play</button>
+            <div class="guide" id="guide">
+                <h3>How to Play</h3>
+                <div class="guide-content">
+                    <p><strong>Objective:</strong> Move all discs from the first rod to the last rod.</p>
+                    <p><strong>Rules:</strong></p>
+                    <ul>
+                        <li>Only one disc can be moved at a time</li>
+                        <li>A larger disc cannot be placed on a smaller disc</li>
+                        <li>You must move all discs to the rightmost rod</li>
+                    </ul>
+                    <p><strong>Player 1 Controls:</strong></p>
+                    <ul>
+                        <li><kbd>Q</kbd> - Select Left Rod</li>
+                        <li><kbd>W</kbd> - Select Middle Rod</li>
+                        <li><kbd>E</kbd> - Select Right Rod</li>
+                        <li><kbd>Space</kbd> - Pick/Place Disc</li>
+                    </ul>
+                    <p><strong>Player 2 Controls:</strong></p>
+                    <ul>
+                        <li><kbd>U</kbd> - Select Left Rod</li>
+                        <li><kbd>I</kbd> - Select Middle Rod</li>
+                        <li><kbd>O</kbd> - Select Right Rod</li>
+                        <li><kbd>Enter</kbd> - Pick/Place Disc</li>
+                    </ul>
+                    <p><strong>Scoring:</strong> Finish in fewer moves and less time to score more points!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Split Screen Game Area -->
+        <div class="game-wrapper">
+            <!-- Player 1 Side -->
+            <div class="player-section player1-section">
+                <div class="player-header">
+                    <h2>Player 1</h2>
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="label">Timer:</span>
+                            <span class="timer" id="timer1">00:00</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Moves:</span>
+                            <span class="moves" id="moves1">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Points:</span>
+                            <span class="points" id="points1">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-board" id="board1">
+                    <div class="rod" data-player="1" data-rod="0">
+                        <div class="rod-label">Rod A</div>
+                        <div class="discs-container" id="rod-1-0"></div>
+                    </div>
+                    <div class="rod" data-player="1" data-rod="1">
+                        <div class="rod-label">Rod B</div>
+                        <div class="discs-container" id="rod-1-1"></div>
+                    </div>
+                    <div class="rod" data-player="1" data-rod="2">
+                        <div class="rod-label">Rod C</div>
+                        <div class="discs-container" id="rod-1-2"></div>
+                    </div>
+                </div>
+
+                <div class="selected-rod" id="selected1">Selected: Rod A</div>
+                <div class="picked-indicator" id="picked1"></div>
+                <div class="status" id="status1"></div>
+            </div>
+
+            <!-- Divider -->
+            <div class="divider"></div>
+
+            <!-- Player 2 Side -->
+            <div class="player-section player2-section">
+                <div class="player-header">
+                    <h2>Player 2</h2>
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="label">Timer:</span>
+                            <span class="timer" id="timer2">00:00</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Moves:</span>
+                            <span class="moves" id="moves2">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Points:</span>
+                            <span class="points" id="points2">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-board" id="board2">
+                    <div class="rod" data-player="2" data-rod="0">
+                        <div class="rod-label">Rod A</div>
+                        <div class="discs-container" id="rod-2-0"></div>
+                    </div>
+                    <div class="rod" data-player="2" data-rod="1">
+                        <div class="rod-label">Rod B</div>
+                        <div class="discs-container" id="rod-2-1"></div>
+                    </div>
+                    <div class="rod" data-player="2" data-rod="2">
+                        <div class="rod-label">Rod C</div>
+                        <div class="discs-container" id="rod-2-2"></div>
+                    </div>
+                </div>
+
+                <div class="selected-rod" id="selected2">Selected: Rod A</div>
+                <div class="picked-indicator" id="picked2"></div>
+                <div class="status" id="status2"></div>
+            </div>
+        </div>
+
+        <!-- Results Modal -->
+        <div class="modal" id="resultModal">
+            <div class="modal-content">
+                <h2>🎉 Level Complete!</h2>
+                <div class="results">
+                    <div class="player-result" id="player1Result"></div>
+                    <div class="player-result" id="player2Result"></div>
+                </div>
+                <div class="winner" id="winner"></div>
+                <button class="next-btn" id="nextLevelBtn">Next Level</button>
+                <button class="restart-btn" id="restartBtn">Restart Game</button>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div class="modal" id="gameOverModal">
+            <div class="modal-content">
+                <h2>🏆 Game Over!</h2>
+                <div class="final-results">
+                    <div id="finalResults"></div>
+                </div>
+                <button class="restart-btn" id="restartGameBtn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
